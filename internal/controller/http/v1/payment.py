@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post(path='')
-async def create_user(
+async def accrual(
     dto: PaymentBody,
     user_service: UserService = Depends(),
     request_user: RequestUser = Depends(dependencies.get_request_user),

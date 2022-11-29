@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from . import payment, user
+from . import payment, user, vehicle
 
 router = APIRouter()
 router.include_router(
@@ -12,4 +12,9 @@ router.include_router(
     payment.router,
     prefix='/payment',
     tags=['payment'],
+)
+router.include_router(
+    vehicle.router,
+    prefix='/vehicle',
+    tags=['vehicle'],
 )
