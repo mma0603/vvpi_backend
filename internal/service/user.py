@@ -25,5 +25,9 @@ class UserService(object):  # noqa: WPS214
         user = self.repository.create(id=user_id, **dto.dict())
         return await self.repository.save(user)
 
+    async def accrual(self, user_id: UUID, amount: float) -> User:
+        user = self.repository.create(id=user_id, balance=User.balance + amount)
+        return await self.repository.save(user)
+
     async def find_one_or_fail(self, **attrs) -> User:
         return await self.repository.find_one_or_fail(**attrs)

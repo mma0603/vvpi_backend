@@ -12,9 +12,9 @@ sys.path.append(str(BASE_DIR))
 
 from internal.config import settings  # noqa: E402
 from internal.entity.base import Base  # noqa: E402
+from internal.entity.place import Place  # noqa: E402
 from internal.entity.rent import Rent  # noqa: E402
 from internal.entity.user import User  # noqa: E402
-from internal.entity.place import Place  # noqa: E402
 from internal.entity.vehicle import Vehicle  # noqa: E402
 
 # this is the Alembic Config object, which provides

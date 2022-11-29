@@ -9,6 +9,7 @@ from internal.usecase.utils import hashing
 class BaseUser(BaseModel):
 
     username: constr(max_length=50)
+    balance: float
 
 
 class UserRead(BaseUser):
