@@ -1,5 +1,4 @@
 from typing import List
-from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -22,7 +21,7 @@ router = APIRouter()
     response_model=List[PlaceRead],
     responses=response.HTTP_401_UNAUTHORIZED(
         'Invalid authentication credentials',
-    )
+    ),
 )
 async def read_places(
     dto: PlaceFilter = Depends(),
@@ -37,7 +36,7 @@ async def read_places(
     response_model=List[PlaceRead],
     responses=response.HTTP_401_UNAUTHORIZED(
         'Invalid authentication credentials',
-    )
+    ),
 )
 async def read_my_places(
     place_service: PlaceService = Depends(),
@@ -57,12 +56,14 @@ async def read_my_places(
     ),
     status_code=status.HTTP_201_CREATED,
 )
-async def read_my_places(
+async def rent_place(
     dto: RentCreate,
     place_service: PlaceService = Depends(),
     request_user: RequestUser = Depends(dependencies.get_request_user),
 ) -> SuccessfulResponse:
-    vehicle = await place_service.vehicle_service.find_one_or_fail(id=dto.vehicle_id)
+    vehicle = await place_service.vehicle_service.find_one_or_fail(
+        id=dto.vehicle_id,
+    )
     if vehicle.user_id != request_user.id:
         raise HTTPException(
             detail='Not your vehicle',

@@ -26,7 +26,7 @@ router = APIRouter()
     response_model=List[VehicleRead],
     responses=response.HTTP_401_UNAUTHORIZED(
         'Invalid authentication credentials',
-    )
+    ),
 )
 async def read_vehicles(
     vehicle_service: VehicleService = Depends(),
@@ -72,7 +72,7 @@ async def update_vehicle(
         'Invalid authentication credentials',
     ),
 )
-async def update_vehicle(
+async def delete_vehicle(
     vehicle_id: UUID,
     vehicle_service: VehicleService = Depends(),
     _: RequestUser = Depends(dependencies.get_request_user),
