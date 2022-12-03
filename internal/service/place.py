@@ -13,6 +13,7 @@ from internal.entity.place import Place
 from internal.entity.rent import Rent
 from internal.entity.vehicle import Vehicle
 from internal.service.vehicle import VehicleService
+from internal.service.user import UserService
 from internal.usecase.utils import get_session
 
 
@@ -25,6 +26,7 @@ class PlaceService(object):  # noqa: WPS214
         self.repository = InjectRepository(Place, session)
         self.rent_repository = InjectRepository(Rent, session)
         self.vehicle_service = VehicleService(session)
+        self.user_service = UserService(session)
 
     async def find(self, dto: PlaceFilter, **attrs) -> List[Place]:
         where = {Place.name.ilike('%{0}%'.format(dto.name))}
@@ -35,7 +37,10 @@ class PlaceService(object):  # noqa: WPS214
         if dto.available:
             places = list(filter(lambda p: p.rent is None, places))
 
-        return places
+        return list(sorted(places, key=lambda p: p.name))
+
+    async def find_one_or_fail(self, **attrs) -> Place:
+        return await self.repository.find_one_or_fail(**attrs)
 
     async def find_user(self, user_id: UUID) -> List[Place]:
         return await self.repository.find(

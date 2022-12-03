@@ -52,7 +52,9 @@ async def read_my_places(
     ) | response.HTTP_403_FORBIDDEN(
         'Not your vehicle',
     ) | response.HTTP_404_NOT_FOUND(
-        'Already rent or not found',
+        'Already rent',
+    ) | response.HTTP_403_FORBIDDEN(
+        'Not enough money',
     ),
     status_code=status.HTTP_201_CREATED,
 )
@@ -69,14 +71,22 @@ async def rent_place(
             detail='Not your vehicle',
             status_code=status.HTTP_403_FORBIDDEN,
         )
-    place = await place_service.find(
-        PlaceFilter(available=True), id=dto.place_id,
-    )
-    if not place:
+    place = await place_service.find_one_or_fail(id=dto.place_id)
+    if place.rent is not None:
         raise HTTPException(
-            detail='Already rent or not found',
+            detail='Already rent',
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
+    user = await place_service.user_service.find_one_or_fail(id=request_user.id)
+    if place.rent_cost * dto.hours > user.balance:
+        raise HTTPException(
+            detail='Not enough money',
+            status_code=status.HTTP_403_FORBIDDEN,
+        )
+
     await place_service.rent(dto)
+    await place_service.user_service.withdrawal(
+        user.id, place.rent_cost * dto.hours,
+    )
     return SuccessfulResponse()
