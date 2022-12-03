@@ -1,8 +1,10 @@
 import sqlalchemy as sa
+from sqlalchemy import orm
 from sqlalchemy.dialects import postgresql as psql
 
 from internal.entity.base import Base
 from internal.entity.mixin import TimestampMixin
+from internal.entity.vehicle import Vehicle
 
 
 class Rent(TimestampMixin, Base):
@@ -24,3 +26,5 @@ class Rent(TimestampMixin, Base):
         nullable=False,
         server_default=sa.FetchedValue(),
     )
+
+    vehicle = orm.relationship(Vehicle, lazy='joined')

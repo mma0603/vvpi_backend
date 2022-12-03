@@ -20,6 +20,6 @@ class Place(Base):
         uselist=False,
         primaryjoin=lambda: sa.and_(
             orm.remote(Rent.deleted_at) > sa.func.now(),
-            orm.remote(Rent.id) == orm.foreign(Place.id),
+            orm.remote(Rent.place_id) == orm.foreign(Place.id),
         ),
     )

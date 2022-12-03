@@ -3,8 +3,7 @@ from fastapi import APIRouter, Depends
 from internal.dto.payment import PaymentBody
 from internal.dto.user.request import RequestUser
 from internal.service.user import UserService
-from internal.usecase.utils import dependencies
-from internal.usecase.utils import SuccessfulResponse
+from internal.usecase.utils import SuccessfulResponse, dependencies
 
 router = APIRouter()
 

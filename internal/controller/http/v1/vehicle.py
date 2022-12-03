@@ -1,10 +1,15 @@
-from uuid import UUID
 from typing import List
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
-from internal.dto.vehicle import VehicleUpdate, VehicleCreate, VehicleRead, VehicleBody
 from internal.dto.user.request import RequestUser
+from internal.dto.vehicle import (
+    VehicleBody,
+    VehicleCreate,
+    VehicleRead,
+    VehicleUpdate,
+)
 from internal.entity.vehicle import Vehicle
 from internal.service.vehicle import VehicleService
 from internal.usecase.utils import (
